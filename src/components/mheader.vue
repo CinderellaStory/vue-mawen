@@ -39,18 +39,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="less">
-.fl{
-  float: left;
-}
-.fr{
-  float: right;
-}
-.ov{
-  overflow: hidden;
-}
-.mr10{
-  margin-right: 10px;
-}
 button{
   border: 0;
 }
@@ -58,9 +46,6 @@ button{
   height: 90px;
   background: #303643;
   line-height: 90px;
-  .mw{
-    width: 1200px;
-    margin: 0 auto;
     .logo{
       float: left;
       margin-right: 50px;
@@ -92,11 +77,6 @@ button{
       }
     }
     .btn{
-        border-radius: 5px;
-        padding: 0 14px;
-        color: #fff;
-        margin-top: 28px;
-        height: 34px;
         &.askbtn{
         border: 1px solid #0f88eb;
         background: #0f88eb;
@@ -111,6 +91,5 @@ button{
     .btn-group{
 
     }
-  }
 }
 </style>

@@ -1,11 +1,14 @@
 <template>
  <div class="index">
    <mheader></mheader>
+   <mcontainer></mcontainer>
  </div>
 </template>
 
 <script type="text/javascript">
 import mheader from './../../components/mheader'
+import mcontainer from './mcontainer'
+
 
   export default {
    data() {
@@ -14,7 +17,7 @@ import mheader from './../../components/mheader'
       }
   },
   components:{
-    mheader
+    mheader,mcontainer
   }
  }
 </script>
