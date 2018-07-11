@@ -77,6 +77,7 @@ button{
           margin-right: 50px;
           color: #fff;
           text-align: center;
+          cursor: pointer;
         }
       }
     }
