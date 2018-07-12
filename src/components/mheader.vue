@@ -14,7 +14,7 @@
         </div>
         <button class="btn askbtn fl">我要提问</button>
         <div class="btn-group fr">
-          <button class="btn loginbtn fl mr10">登录</button>
+          <button class="btn loginbtn fl mr10" @click="GoLogin">登录</button>
           <button class="btn registerbtn fl">注册</button>
         </div>
      </div>
@@ -32,6 +32,14 @@ export default {
         {text:'联系我们',to:''},
         {text:'名人榜',to:''}
       ]
+    }
+  },
+  methods:{
+    GoLogin(){
+      var _this = this
+      _this.$router.push({
+        path:'/login'
+      })
     }
   }
 }
