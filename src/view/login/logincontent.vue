@@ -44,7 +44,7 @@
             <span>请输入密码长度为6~16，且必须输入数字和字母（至少一位）</span>
         </div>
         <div class="tooltip" v-bind:class="{Number:isNumber}">
-            <span>请输入正确的手机号码</span>
+            <span>请输入正确的手机号码或邮箱</span>
         </div>
     </div>
 </template>
@@ -53,49 +53,121 @@
 export default {
   data() {
     return {
-        isActive:false,
-        isPassText:false,
-        isNumber:false,
-        isNumberText:false,
-        loginForm:{
-            userName:"",
-            password:""
-        }
-    }
-  },
-  methods:{
-      handleLogin(formName){
-        var name = this.loginForm.userName;
-        var pass = this.loginForm.password;
-        var regexp = /(?=^.*?\d)(?=^.*?[a-zA-Z])^[0-9a-zA-Z]{6,16}$/; //密码长度为6~16，且必须输入数字和字母（至少一位）
-        var phonenumber=/^[1][3,4,5,7,8][0-9]{9}$/;  //手机号正则
-        var r = pass.match(regexp);
-        var number = name.match(phonenumber);
-          if(name==""){
-                this.isNumberText=true;
-              return false;
-          }else if(number == null){
-                this.isNumber=true;
-                return false;
-          }else if(pass==""){
-              this.isPassText=true;
-              this.isNumber=false;
-               return false;
-          }else if(r == null){
-            this.isPassText=false;
-            this.isActive=true;
-            this.isNumberText=false;
-            this.isNumber=false;
-               return false;
-          }
-          else{
-             this.isActive=false;
-             this.isNumber=false;
-              return
-          }
+      isActive: false, //提示输入密码必须为6位
+      isPassText: false, //输入密码不能为空
+      isNumber: false, //提示输入手机号码或邮箱
+      isNumberText: false, //手机号码或邮箱不能为空
+      loginForm: {
+        userName: "",
+        password: ""
       }
+    };
+  },
+  methods: {
+    handleLogin(formName) {
+      var name = this.loginForm.userName;
+      var pass = this.loginForm.password;
+      var regexpPsd = /(?=^.*?\d)(?=^.*?[a-zA-Z])^[0-9a-zA-Z]{6,16}$/; //密码长度为6~16，且必须输入数字和字母（至少一位）
+      var regexpNumber = /^[1][3,4,5,7,8][0-9]{9}$/; //手机号正则
+      var regexpEmil = /^[a-zA-Z0-9_.-]+@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*\.[a-zA-Z0-9]{2,6}$/; //邮箱正则
+      var pwd = pass.match(regexpPsd);
+      var number = name.match(regexpNumber);
+      var emil = name.match(regexpEmil);
+
+      if (name == "") {
+        // console.log("手机号码邮箱不能为空");
+        this.isNumberText = true;
+        this.isNumber = false;
+        return false;
+      } else if (name.indexOf("@") > -1) {
+        if (emil == null) {
+          // console.log("请输入正确的邮箱");
+          this.isNumber = true;
+          this.isNumberText = false;
+          return false;
+        } else {
+          if (pass == "") {
+            this.isPassText = true;
+            this.isNumberText = false;
+            this.isNumber = false;
+            // console.log("密码不能为空");
+            return false;
+          } else if (pwd == null) {
+            this.isActive = true;
+            this.isPassText = false;
+            this.isNumberText = false;
+            this.isNumber = false;
+            // console.log("密码必须为6伟");
+            return false;
+          } else {
+            // console.log("邮箱验证成功");
+            this.isActive = false;
+            this.isPassText = false;
+            this.isNumberText = false;
+            this.isNumber = false;
+            alert("恭喜邮箱验证成功")
+            console.log("邮箱为："+emil+'密码为：'+pwd);
+            return true;
+          }
+        }
+      } else {
+        if (number == null) {
+          // console.log("请输入正确的手机号码");
+          this.isNumber = true;
+          this.isNumberText = false;
+          this.isPassText = true;
+          return false;
+        } else {
+          if (pass == "") {
+            // console.log("密码不能为空");
+            this.isPassText = true;
+            this.isNumberText = false;
+            this.isNumber = false;
+            return false;
+          } else if (pwd == null) {
+            this.isActive = true;
+            this.isPassText = false;
+            this.isNumberText = false;
+            this.isNumber = false;
+            // console.log("密码必须为6伟");
+            return false;
+          } else {
+            // console.log("手机号码验证成功");
+            this.isActive = false;
+            this.isPassText = false;
+            this.isNumberText = false;
+            this.isNumber = false;
+            alert("恭喜手机号码验证成功")
+            console.log("邮箱为："+number+'密码为：'+pwd);
+            return true;
+          }
+        }
+      }
+
+      // if (name == "") {
+      //   this.isNumberText = true;
+      //   return false;
+      // } else if (number == null&&emil == null) {
+      //   this.isNumber = true;
+      //   return false;
+      // } else if (pass == "") {
+      //   this.isPassText = true;
+      //   this.isNumber = false;
+      //   return false;
+      // } else if (r == null) {
+      //   this.isPassText = false;
+      //   this.isActive = false;
+      //   this.isNumberText = false;
+      //   this.isNumber = false;
+      //   return false;
+      // } else {
+      //   this.isActive = false;
+      //   this.isNumber = false;
+      //   _this.$router.push({path:"/home"})
+      // }
+    }
   }
-}
+};
 </script>
 
 <style scoped lang="less">
@@ -107,6 +179,7 @@ export default {
 .login {
   .logincontent {
     width: 340px;
+    position: relative;
     background: #fff;
     padding: 30px 30px 40px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
@@ -131,17 +204,18 @@ export default {
           height: 40px;
           border-radius: 3px;
           border: 1px solid #c3c3c3;
-          &:focus{
-              border: 1px solid @orange;
+          &:focus {
+            border: 1px solid @orange;
           }
         }
-        .text{
-            color: red;
-            display: none;
-            margin-top: 10px;
+        .text {
+          color: red;
+          display: none;
+          margin-top: 10px;
         }
-        .passtext,.numbertext{
-            display: block;
+        .passtext,
+        .numbertext {
+          display: block;
         }
         input[type="password"] {
           outline: none;
@@ -150,8 +224,8 @@ export default {
           height: 40px;
           border-radius: 3px;
           border: 1px solid #c3c3c3;
-          &:focus{
-              border: 1px solid @orange;
+          &:focus {
+            border: 1px solid @orange;
           }
         }
         .RememberText {
@@ -166,46 +240,47 @@ export default {
           background: @blue;
         }
         h6 {
-            span {
+          span {
             margin: 0 20px;
             color: #b5b5b5;
             font-size: 14px;
-            }
-            i {
+          }
+          i {
             width: 30%;
             height: 1px;
             background: #b5b5b5;
             vertical-align: middle;
             display: inline-block;
-            }
+          }
         }
-        ul{
-            li{
-                float: left;
-                margin-right: 60px;
-                cursor: pointer;
-            }
+        ul {
+          li {
+            float: left;
+            margin-right: 60px;
+            cursor: pointer;
+          }
         }
       }
     }
-    .tooltip{
-        border: 1px solid #efefef;
-        box-shadow: 1px 1px 1px #efefef;
-        position: absolute; display: none;
-        padding: 10px;
-        background: #fff;
-        border-radius: 4px;
-        width: 196px;
-        left: 1020px;
+    .tooltip {
+      border: 1px solid #efefef;
+      box-shadow: 1px 1px 1px #efefef;
+      position: absolute;
+      display: none;
+      padding: 10px;
+      background: #fff;
+      border-radius: 4px;
+      width: 196px;
+      left: 400px;
     }
-    .active{
-            display: block;
-            top: 346px;
-        }
-        .Number{
-            display: block;
-            top: 290px;
-        }
+    .active {
+      display: block;
+      top: 124px;
     }
+    .Number {
+      display: block;
+      top: 70px;
+    }
+  }
 }
 </style>
